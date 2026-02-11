@@ -4,80 +4,528 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>For Gunna ❤️</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
-:root{--pink:#ff6fa5;--soft:#fff0f5}
-body{margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#ffd6e7,#fff);text-align:center;overflow-x:hidden}
-.container{max-width:900px;margin:auto;padding:30px}
-.title{font-family:'Great Vibes',cursive;font-size:64px;color:var(--pink);animation:fadeDown 1.2s ease}
-.card{background:white;margin-top:30px;padding:30px;border-radius:25px;box-shadow:0 10px 25px rgba(0,0,0,.15);animation:fadeUp 1s ease}
-.page{display:none;opacity:0;transform:translateX(40px);transition:.8s}
-.active{display:block;opacity:1;transform:translateX(0)}
-img{width:260px;border-radius:18px;margin-top:15px;animation:zoom 1.2s ease}
-button{background:var(--pink);border:none;color:white;padding:14px 26px;font-size:18px;border-radius:50px;cursor:pointer;margin-top:25px;transition:.3s}
-button:hover{background:#ff4f92;transform:scale(1.08)}
-.note{margin-top:25px;font-size:18px}
-.typing{border-right:3px solid var(--pink);white-space:pre-wrap;overflow:hidden}
-.heart{position:fixed;color:var(--pink);animation:float linear infinite;font-size:22px}
-@keyframes float{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}100%{transform:translateY(-10vh);opacity:0}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
-@keyframes zoom{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+    /* 1. GLOBAL RESET */
+    * {
+        box-sizing: border-box;
+    }
+
+    :root { 
+        --bg-pink: #ffb7c5;
+        --deep-red: #d92525; 
+        --glass-white: rgba(255, 255, 255, 0.9);
+    }
+    
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden; 
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-pink);
+        background-image: url('background.jpg'); 
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        text-align: center;
+        cursor: auto; 
+    }
+
+    #background-decoration {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1; 
+        pointer-events: none;
+    }
+
+    .bg-object {
+        position: absolute;
+        opacity: 0.15;
+        animation: floatBackground 15s infinite linear;
+        font-size: 4rem;
+        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+    }
+
+    @keyframes floatBackground {
+        0% { transform: translateY(110vh) rotate(0deg); }
+        100% { transform: translateY(-20vh) rotate(360deg); }
+    }
+
+    /* 2. CONTAINER ALIGNMENT */
+    .container {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        padding-bottom: 50px;
+        position: relative;
+        z-index: 10; 
+    }
+
+    .title {
+        font-family: 'Great Vibes', cursive; 
+        font-size: 60px; 
+        color: var(--deep-red);
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.4); 
+        animation: fadeDown 1.2s ease;
+        line-height: 1.2;
+        width: 100%;
+        text-align: center;
+    }
+
+    .card {
+        background: var(--glass-white);
+        padding: 30px;
+        border-radius: 30px;
+        box-shadow: 0 20px 50px rgba(217, 37, 37, 0.15);
+        animation: fadeUp 1s ease;
+        position: relative; 
+        z-index: 20; 
+        width: 100%;
+        max-width: 500px;
+        border: 2px solid rgba(255,255,255,0.8);
+        backdrop-filter: blur(8px);
+        margin: 20px auto; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .page {
+        display: none;
+        opacity: 0;
+        transition: .5s;
+        width: 100%; 
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .active {
+        display: flex; 
+        opacity: 1;
+    }
+
+    img {
+        width: 100%;
+        max-height: 300px;
+        border-radius: 20px;
+        margin-top: 20px;
+        animation: zoom 1.2s ease;
+        object-fit: cover;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    button {
+        background: var(--deep-red);
+        border: none;
+        color: white;
+        padding: 12px 35px;
+        font-size: 24px;
+        font-family: 'Great Vibes', cursive; 
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 25px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 10px 20px rgba(217, 37, 37, 0.2);
+        cursor: inherit; 
+    }
+
+    button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(217, 37, 37, 0.3);
+        background: #c01f1f;
+    }
+
+    .btn-group {
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px; 
+        height: 60px; 
+        position: static; 
+    }
+
+    #yes-btn {
+        z-index: 100;
+    }
+
+    #no-btn {
+        background: #555; 
+        z-index: 100;
+        transition: 0.2s ease-out; 
+        position: relative; 
+    }
+
+    .typing { 
+        font-size: 18px; 
+        line-height: 1.8; 
+        color: #555; 
+        white-space: pre-wrap; 
+        margin-top: 10px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        text-align: center; 
+        width: 100%;
+    }
+
+    .particle {
+        position: fixed;
+        bottom: -50px; 
+        font-size: 35px;
+        animation: floatUpHalf 4s linear forwards;
+        pointer-events: none; 
+        z-index: 9999; 
+    }
+
+    @keyframes floatUpHalf {
+        0% { transform: translateY(0) scale(0.8); opacity: 0; }
+        10% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { transform: translateY(-55vh) scale(1.2); opacity: 0; }
+    }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-30px) } to { opacity: 1; transform: none } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px) } to { opacity: 1; transform: none } }
+    @keyframes zoom { from { transform: scale(.8); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+    
+    @media (max-width: 600px) {
+        .title { font-size: 45px; }
+        .card { padding: 20px; width: 95%; }
+    }
 </style>
 </head>
 <body>
-<!-- Background Music (offline file) -->
-<audio id="bgm" src="song.mp3" preload="auto" loop></audio>
-<div class="container">
+    
+    <audio id="bgm" src="song.mp3" preload="auto" loop></audio>
 
-<div class="page active" id="p1">
-<div class="title">Happy Valentine's Week 💌</div>
-<div class="card">
-<p id="intro" class="typing"></p>
-<button onclick="next(2)">Next ➜</button>
-</div>
-</div>
+    <div id="background-decoration"></div>
+    
+    <div class="container">
 
-<div class="page" id="p2"><div class="title">🌹 Rose Day</div><div class="card"><p>Har rose ki tarah tum meri life ko beautiful banati ho.</p><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" /><br><button onclick="next(3)">Next ➜</button></div></div>
-<div class="page" id="p3"><div class="title">💍 Propose Day</div><div class="card"><p>14 Feb 2025 — best decision of my life, tumse puchna ❤️</p><img src="https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2" /><br><button onclick="next(4)">Next ➜</button></div></div>
-<div class="page" id="p4"><div class="title">🍫 Chocolate Day</div><div class="card"><p>Tumhari baatein chocolate se bhi zyada sweet hoti hain.</p><img src="https://images.unsplash.com/photo-1511381939415-e44015466834" /><br><button onclick="next(5)">Next ➜</button></div></div>
-<div class="page" id="p5"><div class="title">🧸 Teddy Day</div><div class="card"><p>Kaash yeh teddy meri jagah tumhe hug kar pata jab main nahi hota.</p><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" /><br><button onclick="next(6)">Next ➜</button></div></div>
-<div class="page" id="p6"><div class="title">🤝 Promise Day</div><div class="card"><p>Main promise karta hoon — distance kabhi feelings kam nahi karega.</p><img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7" /><br><button onclick="next(7)">Next ➜</button></div></div>
-<div class="page" id="p7"><div class="title">🤗 Hug Day</div><div class="card"><p>Sabse zyada miss tumhari hugs hi karta hoon.</p><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9" /><br><button onclick="next(8)">Next ➜</button></div></div>
-<div class="page" id="p8"><div class="title">💋 Kiss Day</div><div class="card"><p>Ek din distance khatam hoga… aur main tumhe personally wish karunga.</p><img src="https://images.unsplash.com/photo-1501908734255-16579c18c25f" /><br><button onclick="next(9)">Next ➜</button></div></div>
+        <div class="page active" id="p1">
+            <div class="title">Happy Valentine's Week</div>
+            <div class="card">
+                <p id="intro" class="typing"></p>
+                <button onclick="next(2)">Start Surprise ➜</button>
+            </div>
+        </div>
 
-<div class="page" id="p9">
-<div class="title">❤️ Valentine's Day</div>
-<div class="card"><p id="final" class="typing note"></p></div>
-</div>
+        <div class="page" id="p2">
+            <div class="title">Rose Day</div>
+            <div class="card">
+                <p id="t2" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(3)">Next ➜</button>
+            </div>
+        </div>
 
-</div>
+        <div class="page" id="p3">
+            <div class="title">Propose Day</div>
+            <div class="card">
+                <p id="t3" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(4)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p4">
+            <div class="title">Chocolate Day</div>
+            <div class="card">
+                <p id="t4" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(5)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p5">
+            <div class="title">Teddy Day</div>
+            <div class="card">
+                <p id="t5" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1559458201-929737c3583d?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(6)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p6">
+            <div class="title">Promise Day</div>
+            <div class="card">
+                <p id="t6" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1510022079733-8b58aca7c4a9?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(7)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p7">
+            <div class="title">Hug Day</div>
+            <div class="card">
+                <p id="t7" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1517677130602-23c233c7a26d?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(8)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p8">
+            <div class="title">Kiss Day</div>
+            <div class="card">
+                <p id="t8" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1522567552226-7bd06a7f5358?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(9)">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p9">
+            <div class="title">Valentine's Day</div>
+            <div class="card">
+                <p id="final" class="typing"></p>
+                <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=500&auto=format&fit=crop" />
+                <br><button onclick="next(10)">One Last Question ➜</button>
+            </div>
+        </div>
+
+        <div class="page" id="p10">
+            <div class="title">Will you be my Girlfriend? 🥺</div>
+            <div class="card" id="q-card">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h5ZnpwZ2Z5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5ZnZ5/26FLdmIp6wJr91JAI/giphy.gif" style="max-height: 200px; border-radius: 10px;" />
+                <p class="typing" style="font-weight: bold; margin-top: 20px;">
+                    Gunna, I promise to always make you smile. ❤️
+                </p>
+                
+                <div class="btn-group">
+                    <button id="yes-btn" onclick="next(11)">Yes! 💖</button>
+                    <button id="no-btn" onmouseover="moveButton()">No 💔</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="p11">
+            <div class="title">Woohoo! 🎉</div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500&auto=format&fit=crop" alt="Happy Couple" />
+                <p class="typing" style="font-size: 22px; color: #d92525; font-weight: bold;">
+                    Congrats! Aapki mere saath permanent booking ho chukii hai! ❤️🔒
+                </p>
+                <p class="typing">Now there is no going back. I love you! 😘</p>
+            </div>
+        </div>
+
+    </div>
 
 <script>
-function next(n){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active');window.scrollTo(0,0);if(n===9)type(finalText,'final')}
+    // --- 3D FLOATING BACKGROUND ---
+    const bgObjects = ['💍', '📅', '🍫', '🏹', '🔒', '📫', '🃏', '🎁', '❤️'];
+    
+    function createBackgroundDecoration() {
+        const container = document.getElementById('background-decoration');
+        for(let i=0; i<20; i++) {
+            const el = document.createElement('div');
+            el.className = 'bg-object';
+            el.innerText = bgObjects[Math.floor(Math.random() * bgObjects.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 10 + 10) + 's'; 
+            el.style.animationDelay = (Math.random() * 5) + 's';
+            el.style.fontSize = (Math.random() * 3 + 2) + 'rem'; 
+            container.appendChild(el);
+        }
+    }
+    createBackgroundDecoration();
 
-const introText=`Hii Gunna ❤️\n\nKese ho aap…\nJab se tum meri life mein aayi ho na, tab se har din thoda special lagta hai.\nNormal days bhi memories ban jaate hain… aur distance bhi utna bura nahi lagta.\nBecause honestly — tum ho toh sab hai.`
+    // --- MOVE THE NO BUTTON (THE TRICK) ---
+    let hoverCount = 0;
+    let initialButtonY = null; // Store the "Floor"
 
-const finalText=`Aporva Singh…\nTum sirf meri girlfriend nahi ho,\nTum meri peace ho, meri comfort ho, meri daily happiness ho.\nTumhari existence meri life ko better banati hai.\nAur main genuinely lucky feel karta hoon ki tum meri ho.\nForever your person ❤️`
+    function moveButton() {
+        const btn = document.getElementById('no-btn');
+        const card = document.getElementById('q-card'); 
+        
+        // 1. CAPTURE THE FLOOR (First time only)
+        if (initialButtonY === null) {
+            initialButtonY = btn.offsetTop;
+        }
 
-function type(text,id){let i=0;const el=document.getElementById(id);el.innerHTML='';const timer=setInterval(()=>{el.innerHTML+=text[i];i++;if(i>=text.length)clearInterval(timer)},28)}
+        hoverCount++;
 
-type(introText,'intro')
+        if (hoverCount < 9) {
+            // PHASE 1: Move INSIDE the card (Strictly UP or EQUAL)
+            btn.style.position = 'absolute';
+            
+            // X: Anywhere within card width
+            const maxX = card.clientWidth - btn.offsetWidth; 
+            const x = Math.random() * maxX;
 
-function hearts(){const h=document.createElement('div');h.className='heart';h.innerHTML='❤';h.style.left=Math.random()*100+'vw';h.style.animationDuration=4+Math.random()*4+'s';document.body.appendChild(h);setTimeout(()=>h.remove(),8000)}
-setInterval(hearts,350)
+            // Y: STRICTLY between 0 (Top) and initialButtonY (The Floor)
+            const y = Math.random() * initialButtonY;
 
-// Start music with sound after first button click
-let musicStarted=false;
-function startMusic(){
- if(musicStarted) return;
- const audio=document.getElementById('bgm');
- audio.volume=0.8;
- audio.play().catch(()=>{});
- musicStarted=true;
-}
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            
+        } else {
+            // PHASE 2: Move ANYWHERE on SCREEN (Fixed)
+            btn.style.position = 'fixed';
+            
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            // Restrict to Top 50% of screen to prevent it from going too low
+            const y = Math.random() * (window.innerHeight / 2);
+            
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+    }
 
-document.querySelectorAll('button').forEach(b=>b.addEventListener('click',startMusic));
+    // --- TEXT CONTENT ---
+    const texts = {
+        intro: `Hii Gunna ❤️\n\nKese ho aap…\nJab se tum meri life mein aayi ho na, tab se har din thoda special lagta hai.\nNormal days bhi memories ban jaate hain… aur distance bhi utna bura nahi lagta.\nBecause honestly — tum ho toh sab hai.`,
+        t2: `Har rose ki tarah tum meri life ko beautiful banati ho.`,
+        t3: `14 Feb 2025 — best decision of my life, tumse puchna ❤️`,
+        t4: `Tumhari baatein chocolate se bhi zyada sweet hoti hain.`,
+        t5: `Kaash yeh teddy meri jagah tumhe hug kar pata jab main nahi hota.`,
+        t6: `Main promise karta hoon — distance kabhi feelings kam nahi karega.`,
+        t7: `Sabse zyada miss tumhari hugs hi karta hoon.`,
+        t8: `Ek din distance khatam hoga… aur main tumhe personally wish karunga.`,
+        final: `Aporva Singh…\nTum sirf meri girlfriend nahi ho,\nTum meri peace ho, meri comfort ho, meri daily happiness ho.\nTumhari existence meri life ko better banati hai.\nAur main genuinely lucky feel karta hoon ki tum meri ho.\nForever your person ❤️`
+    };
+
+    function type(text, id) {
+        let i = 0;
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = '';
+        const timer = setInterval(() => {
+            el.innerHTML += text[i];
+            i++;
+            if (i >= text.length) clearInterval(timer);
+        }, 40);
+    }
+
+    type(texts.intro, 'intro');
+
+    // --- EMOJI CONFIG ---
+    const pageEmoji = {
+        p1: ['❤️', '💖'],
+        p2: ['🌹'],
+        p3: ['💍', '💎'],
+        p4: ['🍫'],
+        p5: ['🧸', '🎀'],
+        p6: ['🤞', '🤝'],
+        p7: ['🫂'],
+        p8: ['💋', '💏'],
+        p9: ['❤️', '💖', '💘'],
+        p10: ['❓', '🥺'],
+        p11: ['🎉', '💍', '🔒']
+    };
+
+    const cursorEmoji = {
+        p1: '❤️',
+        p2: '🌹',
+        p3: '💍',
+        p4: '🍫',
+        p5: '🧸',
+        p6: '🤞',
+        p7: '🫂',
+        p8: '💏',
+        p9: '💘',
+        p10: '❓',
+        p11: '🎉'
+    };
+
+    function changeCursor(emoji) {
+        const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <text y="28" font-size="28">${emoji}</text>
+            </svg>
+        `;
+        const url = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+        document.body.style.cursor = `url(${url}) 16 16, auto`;
+    }
+
+    changeCursor(cursorEmoji['p1']);
+
+    let particleInterval = null;
+
+    function startParticles(pageId) {
+        stopParticles();
+        const emojis = pageEmoji[pageId] || ['❤️'];
+        particleInterval = setInterval(() => {
+            createParticle(emojis);
+        }, 300);
+    }
+
+    function createParticle(emojiArray) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const randomEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+        p.textContent = randomEmoji;
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.fontSize = (Math.random() * 20 + 30) + 'px'; 
+        p.style.animationDuration = (Math.random() * 2 + 3) + 's'; 
+        document.body.appendChild(p);
+        setTimeout(() => { p.remove(); }, 5000);
+    }
+
+    function stopParticles() {
+        if (particleInterval) {
+            clearInterval(particleInterval);
+            particleInterval = null;
+        }
+    }
+
+    startParticles('p1');
+
+    function next(n) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        
+        const id = 'p' + n;
+        const nextPage = document.getElementById(id);
+        if(nextPage) {
+            nextPage.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            startParticles(id);
+            if(cursorEmoji[id]) changeCursor(cursorEmoji[id]);
+
+            if (texts['t' + n]) type(texts['t' + n], 't' + n);
+            if (n === 9) type(texts.final, 'final');
+            
+            // Celebration confetti for the final yes!
+            if (n === 11) {
+                 // 1. Emoji Rain
+                 for(let i=0; i<30; i++) createParticle(['🎉', '❤️', '💍']);
+                 
+                 // 2. REAL CONFETTI POP (using the library)
+                 confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                 });
+            }
+
+            startMusic();
+        }
+    }
+
+    let musicStarted = false;
+    function startMusic() {
+        if (musicStarted) return;
+        const audio = document.getElementById('bgm');
+        audio.volume = 0.5;
+        audio.play().catch(error => { console.log("Click to play"); });
+        musicStarted = true;
+    }
 </script>
 </body>
 </html>
